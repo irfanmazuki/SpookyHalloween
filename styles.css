@@ -64,3 +64,7 @@ body {
   text-align: left;
   box-shadow: 0 0 10px rgba(255, 204, 102, 0.5);
 }
+
+.fade-out {
+  opacity: 0;
+}
