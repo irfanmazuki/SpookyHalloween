@@ -3,18 +3,36 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Adventure Game</title>
+    <title>The Palace Mystery</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <div class="game-container">
-      <div class="moderator-box" id="moderator-box">
-        <!-- Text inserted dynamically -->
+    <div id="game-container">
+      <!-- LEFT PANEL: LOG -->
+      <div id="left-panel">
+        <h1>Jack Lantern</h1>
+        <p class="subtitle">The Palace Mystery — Investigation Log</p>
+        <div id="log"></div>
+        <div id="controls">
+          <p id="question-count">Questions left: 12 (max 6 each)</p>
+          <button id="clear-log">Clear</button>
+          <button id="back">Back</button>
+        </div>
       </div>
-      <div class="scene">
-        <img id="scene-image" src="" alt="Scene Image" />
+
+      <!-- RIGHT PANEL: STORY -->
+      <div id="right-panel">
+        <h1>The Palace Mystery</h1>
+        <div id="story-container">
+          <img
+            id="scene-image"
+            src="images/jack_palace.png"
+            alt="Scene Image"
+          />
+          <div id="story-text"></div>
+          <div id="options"></div>
+        </div>
       </div>
-      <div id="options-container" class="options-grid"></div>
     </div>
 
     <script src="script.js"></script>
