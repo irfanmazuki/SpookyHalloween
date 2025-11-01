@@ -1,125 +1,124 @@
-@import url("https://fonts.googleapis.com/css2?family=Uncial+Antiqua&display=swap");
-
 body {
   margin: 0;
-  background: radial-gradient(ellipse at center, #1a0f1f, #0a050a);
-  color: #f8f5e6;
-  font-family: "Uncial Antiqua", serif;
+  background: radial-gradient(#3d2200, #000);
+  color: #ffbb89;
+  font-family: "Lunacy", sans-serif;
+}
+
+.container {
   display: flex;
-  justify-content: center;
-  align-items: center;
   height: 100vh;
 }
 
-#game-container {
-  display: flex;
-  width: 90%;
-  height: 90%;
-  background: rgba(30, 10, 20, 0.7);
-  box-shadow: 0 0 30px rgba(255, 120, 0, 0.4);
-  border-radius: 16px;
-  overflow: hidden;
+/* Left Panel */
+.left-panel {
+  width: 30%;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 20px;
+  overflow-y: auto;
+  border-right: 2px solid #ff6d00;
+}
+.left-panel h2 {
+  font-family: Creepy, serif;
+  color: #ff6d00;
+}
+#hint-log {
+  list-style: none;
+  padding: 0;
 }
 
-#left-panel,
-#right-panel {
+/* Right Panel */
+.right-panel {
   flex: 1;
   padding: 20px;
+  position: relative;
+}
+
+.story {
+  text-align: left;
+}
+.story ul {
+  list-style: none;
+  padding-left: 0;
+}
+.story button {
+  background: #ff6d00;
+  border: none;
+  color: #fff;
+  font-size: 1.2em;
+  padding: 10px 20px;
+  cursor: pointer;
+  margin-top: 20px;
+  border-radius: 10px;
+}
+.story button:hover {
+  background: #ffbb89;
+  color: #000;
+}
+
+.hidden {
+  display: none;
+}
+
+.game-container {
+  display: grid;
+  grid-template-columns: repeat(4, auto);
+  gap: 10px;
+  justify-content: center;
+  perspective: 600px;
+  margin-top: 30px;
+}
+
+.card {
+  position: relative;
+  width: 100px;
+  height: 140px;
+  cursor: pointer;
+}
+
+.card-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 10px;
+  border: 2px solid #ff6d00;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-front {
+  transform: rotateY(180deg);
+  background: #222;
+}
+
+.card.visible .card-front {
+  transform: rotateY(0deg);
+}
+
+.card.visible .card-back {
+  transform: rotateY(180deg);
+}
+
+.choices {
   display: flex;
   flex-direction: column;
+  gap: 10px;
 }
 
-#left-panel {
-  border-right: 2px solid rgba(255, 120, 0, 0.3);
-}
-
-h1 {
-  color: #ff6a00;
-  margin-bottom: 5px;
-}
-
-.subtitle {
-  font-size: 0.9rem;
-  color: #b9b3a5;
-  margin-bottom: 10px;
-}
-
-#log {
-  flex: 1;
-  background: rgba(0, 0, 0, 0.3);
-  padding: 10px;
-  border-radius: 10px;
-  overflow-y: auto;
-  font-size: 0.9rem;
-  margin-bottom: 10px;
-}
-
-#log p {
-  margin: 5px 0;
-}
-
-.jack {
-  color: #ff7300;
-}
-
-.suspect {
-  color: #c3c3c3;
-}
-
-#controls {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-#controls button {
-  background: #3b1a0f;
-  color: #ffb870;
+.suspect-btn,
+#restart-btn {
+  background: #ff6d00;
   border: none;
-  padding: 6px 10px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-family: inherit;
-}
-
-#controls button:hover {
-  background: #5c220e;
-}
-
-#right-panel {
-  position: relative;
-  overflow: hidden;
-}
-
-#scene-image {
-  width: 100%;
-  border-radius: 10px;
-  box-shadow: 0 0 25px rgba(255, 120, 0, 0.3);
-  margin-bottom: 15px;
-  object-fit: cover;
-}
-
-#story-text {
-  font-size: 1.1rem;
-  margin-bottom: 15px;
-  line-height: 1.5;
-}
-
-#options button {
-  display: block;
-  width: 100%;
-  margin: 5px 0;
+  color: white;
+  font-size: 1.1em;
   padding: 10px;
-  font-size: 1rem;
-  color: #f8f5e6;
-  background: #3b1a0f;
-  border: 2px solid #ff7300;
   border-radius: 8px;
   cursor: pointer;
-  transition: background 0.3s ease;
-  font-family: inherit;
 }
-
-#options button:hover {
-  background: #5c220e;
+.suspect-btn:hover,
+#restart-btn:hover {
+  background: #ffbb89;
+  color: #000;
 }

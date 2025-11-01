@@ -3,34 +3,304 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>The Palace Mystery</title>
+    <title>Halloween Mystery</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
+
   <body>
-    <div id="game-container">
-      <!-- LEFT PANEL: LOG -->
-      <div id="left-panel">
-        <h1>Jack Lantern</h1>
-        <p class="subtitle">The Palace Mystery — Investigation Log</p>
-        <div id="log"></div>
-        <div id="controls">
-          <p id="question-count">Questions left: 12 (max 6 each)</p>
-          <button id="clear-log">Clear</button>
-          <button id="back">Back</button>
-        </div>
+    <div class="container">
+      <!-- LEFT PANEL: Detective Log -->
+      <div class="left-panel">
+        <h2>🕵️ Detective Log</h2>
+        <ul id="hint-log">
+          <li>No hints yet... find matching cards!</li>
+        </ul>
       </div>
 
-      <!-- RIGHT PANEL: STORY -->
-      <div id="right-panel">
-        <h1>The Palace Mystery</h1>
-        <div id="story-container">
-          <img
-            id="scene-image"
-            src="images/jack_palace.png"
-            alt="Scene Image"
-          />
-          <div id="story-text"></div>
-          <div id="options"></div>
+      <!-- RIGHT PANEL: Story + Game -->
+      <div class="right-panel">
+        <!-- STORY SECTION -->
+        <div id="story-section" class="story">
+          <h1>🎃 Halloween Mystery</h1>
+          <p>
+            On Halloween night, someone in the village was found lying near the
+            old tree in the graveyard. Four people were nearby, and one of them
+            is the murderer!
+          </p>
+          <ul>
+            <li>
+              🪦 <b>Grave Keeper</b> — Quiet and tired, always digging graves.
+            </li>
+            <li>
+              👧 <b>The Orphan (Lily)</b> — Visits her parents’ graves, holds a
+              burnt locket.
+            </li>
+            <li>
+              🩺 <b>The Doctor</b> — Calm, serious, carries gloves and medicine.
+            </li>
+            <li>
+              🔮 <b>The Fortune Teller</b> — Reads tarot, wears velvet, burns
+              herbs and candles.
+            </li>
+          </ul>
+          <button id="start-btn">Start Investigation</button>
+        </div>
+
+        <!-- GAME SECTION -->
+        <div id="game-section" class="hidden">
+          <div class="game-info-container">
+            <div class="game-info">
+              Time: <span id="time-remaining">100</span>
+            </div>
+            <div class="game-info">Flips: <span id="flips">0</span></div>
+          </div>
+
+          <div class="game-container" id="card-container">
+            <!-- 8 pairs = 16 total cards -->
+            <div class="card" data-hint="Piece of velvet cloth">
+              <div class="card-back card-face">
+                <img
+                  class="spider"
+                  src="https://raw.githubusercontent.com/WebDevSimplified/Mix-Or-Match/master/Assets/Images/Spider.png"
+                />
+              </div>
+              <div class="card-front card-face">
+                <img
+                  class="card-value"
+                  src="https://raw.githubusercontent.com/WebDevSimplified/Mix-Or-Match/master/Assets/Images/Bat.png"
+                />
+              </div>
+            </div>
+            <div class="card" data-hint="Piece of velvet cloth">
+              <div class="card-back card-face">
+                <img
+                  class="spider"
+                  src="https://raw.githubusercontent.com/WebDevSimplified/Mix-Or-Match/master/Assets/Images/Spider.png"
+                />
+              </div>
+              <div class="card-front card-face">
+                <img
+                  class="card-value"
+                  src="https://raw.githubusercontent.com/WebDevSimplified/Mix-Or-Match/master/Assets/Images/Bat.png"
+                />
+              </div>
+            </div>
+
+            <div class="card" data-hint="Broken shovel handle">
+              <div class="card-back card-face">
+                <img
+                  class="spider"
+                  src="https://raw.githubusercontent.com/WebDevSimplified/Mix-Or-Match/master/Assets/Images/Spider.png"
+                />
+              </div>
+              <div class="card-front card-face">
+                <img
+                  class="card-value"
+                  src="https://raw.githubusercontent.com/WebDevSimplified/Mix-Or-Match/master/Assets/Images/Cat.png"
+                />
+              </div>
+            </div>
+            <div class="card" data-hint="Broken shovel handle">
+              <div class="card-back card-face">
+                <img
+                  class="spider"
+                  src="https://raw.githubusercontent.com/WebDevSimplified/Mix-Or-Match/master/Assets/Images/Spider.png"
+                />
+              </div>
+              <div class="card-front card-face">
+                <img
+                  class="card-value"
+                  src="https://raw.githubusercontent.com/WebDevSimplified/Mix-Or-Match/master/Assets/Images/Cat.png"
+                />
+              </div>
+            </div>
+
+            <div class="card" data-hint="Burnt tarot card">
+              <div class="card-back card-face">
+                <img
+                  class="spider"
+                  src="https://raw.githubusercontent.com/WebDevSimplified/Mix-Or-Match/master/Assets/Images/Spider.png"
+                />
+              </div>
+              <div class="card-front card-face">
+                <img
+                  class="card-value"
+                  src="https://raw.githubusercontent.com/WebDevSimplified/Mix-Or-Match/master/Assets/Images/Ghost.png"
+                />
+              </div>
+            </div>
+            <div class="card" data-hint="Burnt tarot card">
+              <div class="card-back card-face">
+                <img
+                  class="spider"
+                  src="https://raw.githubusercontent.com/WebDevSimplified/Mix-Or-Match/master/Assets/Images/Spider.png"
+                />
+              </div>
+              <div class="card-front card-face">
+                <img
+                  class="card-value"
+                  src="https://raw.githubusercontent.com/WebDevSimplified/Mix-Or-Match/master/Assets/Images/Ghost.png"
+                />
+              </div>
+            </div>
+
+            <div class="card" data-hint="Doctor’s glove with blood stain">
+              <div class="card-back card-face">
+                <img
+                  class="spider"
+                  src="https://raw.githubusercontent.com/WebDevSimplified/Mix-Or-Match/master/Assets/Images/Spider.png"
+                />
+              </div>
+              <div class="card-front card-face">
+                <img
+                  class="card-value"
+                  src="https://raw.githubusercontent.com/WebDevSimplified/Mix-Or-Match/master/Assets/Images/Pumpkin.png"
+                />
+              </div>
+            </div>
+            <div class="card" data-hint="Doctor’s glove with blood stain">
+              <div class="card-back card-face">
+                <img
+                  class="spider"
+                  src="https://raw.githubusercontent.com/WebDevSimplified/Mix-Or-Match/master/Assets/Images/Spider.png"
+                />
+              </div>
+              <div class="card-front card-face">
+                <img
+                  class="card-value"
+                  src="https://raw.githubusercontent.com/WebDevSimplified/Mix-Or-Match/master/Assets/Images/Pumpkin.png"
+                />
+              </div>
+            </div>
+
+            <div class="card" data-hint="Ashes from burnt candle wax">
+              <div class="card-back card-face">
+                <img
+                  class="spider"
+                  src="https://raw.githubusercontent.com/WebDevSimplified/Mix-Or-Match/master/Assets/Images/Spider.png"
+                />
+              </div>
+              <div class="card-front card-face">
+                <img
+                  class="card-value"
+                  src="https://raw.githubusercontent.com/WebDevSimplified/Mix-Or-Match/master/Assets/Images/Skull.png"
+                />
+              </div>
+            </div>
+            <div class="card" data-hint="Ashes from burnt candle wax">
+              <div class="card-back card-face">
+                <img
+                  class="spider"
+                  src="https://raw.githubusercontent.com/WebDevSimplified/Mix-Or-Match/master/Assets/Images/Spider.png"
+                />
+              </div>
+              <div class="card-front card-face">
+                <img
+                  class="card-value"
+                  src="https://raw.githubusercontent.com/WebDevSimplified/Mix-Or-Match/master/Assets/Images/Skull.png"
+                />
+              </div>
+            </div>
+
+            <div class="card" data-hint="Child’s burnt locket">
+              <div class="card-back card-face">
+                <img
+                  class="spider"
+                  src="https://raw.githubusercontent.com/WebDevSimplified/Mix-Or-Match/master/Assets/Images/Spider.png"
+                />
+              </div>
+              <div class="card-front card-face">
+                <img
+                  class="card-value"
+                  src="https://raw.githubusercontent.com/WebDevSimplified/Mix-Or-Match/master/Assets/Images/Web.png"
+                />
+              </div>
+            </div>
+            <div class="card" data-hint="Child’s burnt locket">
+              <div class="card-back card-face">
+                <img
+                  class="spider"
+                  src="https://raw.githubusercontent.com/WebDevSimplified/Mix-Or-Match/master/Assets/Images/Spider.png"
+                />
+              </div>
+              <div class="card-front card-face">
+                <img
+                  class="card-value"
+                  src="https://raw.githubusercontent.com/WebDevSimplified/Mix-Or-Match/master/Assets/Images/Web.png"
+                />
+              </div>
+            </div>
+
+            <div class="card" data-hint="Footprint in graveyard dirt">
+              <div class="card-back card-face">
+                <img
+                  class="spider"
+                  src="https://raw.githubusercontent.com/WebDevSimplified/Mix-Or-Match/master/Assets/Images/Spider.png"
+                />
+              </div>
+              <div class="card-front card-face">
+                <img
+                  class="card-value"
+                  src="https://raw.githubusercontent.com/WebDevSimplified/Mix-Or-Match/master/Assets/Images/Cauldron.png"
+                />
+              </div>
+            </div>
+            <div class="card" data-hint="Footprint in graveyard dirt">
+              <div class="card-back card-face">
+                <img
+                  class="spider"
+                  src="https://raw.githubusercontent.com/WebDevSimplified/Mix-Or-Match/master/Assets/Images/Spider.png"
+                />
+              </div>
+              <div class="card-front card-face">
+                <img
+                  class="card-value"
+                  src="https://raw.githubusercontent.com/WebDevSimplified/Mix-Or-Match/master/Assets/Images/Cauldron.png"
+                />
+              </div>
+            </div>
+
+            <div class="card" data-hint="Rusty key near the body">
+              <div class="card-back card-face">
+                <img
+                  class="spider"
+                  src="https://raw.githubusercontent.com/WebDevSimplified/Mix-Or-Match/master/Assets/Images/Spider.png"
+                />
+              </div>
+              <div class="card-front card-face">
+                <img
+                  class="card-value"
+                  src="https://raw.githubusercontent.com/WebDevSimplified/Mix-Or-Match/master/Assets/Images/CandyCorn.png"
+                />
+              </div>
+            </div>
+            <div class="card" data-hint="Rusty key near the body">
+              <div class="card-back card-face">
+                <img
+                  class="spider"
+                  src="https://raw.githubusercontent.com/WebDevSimplified/Mix-Or-Match/master/Assets/Images/Spider.png"
+                />
+              </div>
+              <div class="card-front card-face">
+                <img
+                  class="card-value"
+                  src="https://raw.githubusercontent.com/WebDevSimplified/Mix-Or-Match/master/Assets/Images/CandyCorn.png"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CHOOSE MURDERER SECTION -->
+        <div id="choose-section" class="hidden">
+          <h2>Who do you think is the murderer?</h2>
+          <div class="choices">
+            <button class="suspect-btn">🪦 Grave Keeper</button>
+            <button class="suspect-btn">👧 The Orphan</button>
+            <button class="suspect-btn">🩺 The Doctor</button>
+            <button class="suspect-btn">🔮 The Fortune Teller</button>
+          </div>
+          <button id="restart-btn">Restart Investigation</button>
         </div>
       </div>
     </div>

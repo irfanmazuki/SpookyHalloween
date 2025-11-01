@@ -1,187 +1,132 @@
-let totalQuestions = 12;
-let currentScene = "intro";
+const startBtn = document.getElementById("start-btn");
+const storySection = document.getElementById("story-section");
+const gameSection = document.getElementById("game-section");
+const chooseSection = document.getElementById("choose-section");
+const timeDisplay = document.getElementById("time-remaining");
+const flipsDisplay = document.getElementById("flips");
+const hintLog = document.getElementById("hint-log");
+const restartBtn = document.getElementById("restart-btn");
+const suspectButtons = document.querySelectorAll(".suspect-btn");
+const cardContainer = document.getElementById("card-container");
 
-const scenes = {
-  intro: {
-    text: "Jack Lantern walks toward the eerie palace where he was invited to perform under the glow of a blood-orange moon.",
-    image: "images/jack_palace.png",
-    options: [{ text: "Continue", next: "murderScene" }],
-  },
-  murderScene: {
-    text: "A sudden thud echoes through the hall. The sound of hay falling... the pumpkin head of Jack Lantern flickers weakly in the darkness.",
-    image: "images/murder_scene.png",
-    options: [{ text: "Begin Investigation", next: "investigationHub" }],
-  },
-  investigationHub: {
-    text: "Four figures linger in the shadows of the palace courtyard. Each carries secrets. Who will you question first?",
-    image: "images/palace_courtyard.png",
-    options: [
-      { text: "Gravekeeper", next: "gravekeeper" },
-      { text: "Fortune Teller", next: "fortuneTeller" },
-      { text: "Doctor", next: "doctor" },
-      { text: "Orphan", next: "orphan" },
-    ],
-  },
-  gravekeeper: {
-    text: "The Gravekeeper tightens his grip on his shovel. His breath fogs the air as he mutters.",
-    image: "images/gravekeeper.png",
-    questions: [
-      [
-        "What did you do today?",
-        "Buried what’s left of the past... as always.",
-      ],
-      [
-        "Have you seen Jack Lantern tonight?",
-        "Aye, I saw his light fade near the great hall.",
-      ],
-      [
-        "Why were you invited here?",
-        "The palace asked me to tend the forgotten graves behind it.",
-      ],
-    ],
-  },
-  fortuneTeller: {
-    text: "The Fortune Teller’s eyes glimmer behind her crystal ball, reflecting the candlelight.",
-    image: "images/fortune_teller.png",
-    questions: [
-      ["What do your visions show?", "Only smoke... and betrayal."],
-      [
-        "Do you know who killed Jack?",
-        "The cards whisper of a man with blood on his hands.",
-      ],
-      [
-        "Why are you here tonight?",
-        "To warn them — but my words came too late.",
-      ],
-    ],
-  },
-  doctor: {
-    text: "The Doctor adjusts his gloves nervously, avoiding your gaze.",
-    image: "images/doctor.png",
-    questions: [
-      [
-        "What were you doing before the murder?",
-        "Tending to a... patient. Yes, that’s it.",
-      ],
-      ["Do you recognize Jack’s remains?", "No! I mean... I barely looked."],
-      [
-        "Why are your gloves stained?",
-        "A nosebleed. Mine. Old habit to overprepare.",
-      ],
-    ],
-  },
-  orphan: {
-    text: "The Orphan clutches a small toy lantern, eyes wide and scared.",
-    image: "images/orphan.png",
-    questions: [
-      ["Did you see anything strange?", "Just the shadows moving fast..."],
-      ["Who do you trust here?", "Not the man with the tools..."],
-      [
-        "Why are you here?",
-        "The palace feeds us sometimes... I just wanted soup.",
-      ],
-    ],
-  },
-  accusation: {
-    text: "The night is quiet. You’ve heard enough. Who killed Jack Lantern?",
-    image: "images/palace_dark.png",
-    options: [
-      { text: "The Gravekeeper", next: "wrongEnding" },
-      { text: "The Fortune Teller", next: "wrongEnding" },
-      { text: "The Doctor", next: "correctEnding" },
-      { text: "The Orphan", next: "wrongEnding" },
-    ],
-  },
-  correctEnding: {
-    text: "You confront the Doctor. He stumbles, confessing that jealousy burned brighter than Jack’s light. Justice is served.",
-    image: "images/ending_correct.png",
-    options: [{ text: "Restart", next: "intro" }],
-  },
-  wrongEnding: {
-    text: "You accuse the wrong suspect. A soft laugh echoes — the real killer fades into the fog. Jack’s light dies forever.",
-    image: "images/ending_wrong.png",
-    options: [{ text: "Restart", next: "intro" }],
-  },
-};
+let time = 100;
+let flips = 0;
+let timer;
+let matchedCards = [];
+let firstCard = null;
+let lockBoard = false;
 
-function showScene(scene) {
-  const storyText = document.getElementById("story-text");
-  const optionsDiv = document.getElementById("options");
-  const imageEl = document.getElementById("scene-image");
-
-  storyText.innerHTML = scene.text;
-  optionsDiv.innerHTML = "";
-
-  if (scene.image) imageEl.src = scene.image;
-
-  if (scene.questions) {
-    if (totalQuestions <= 0) return goToScene("accusation");
-    scene.questions.forEach(([q, a]) => {
-      const btn = document.createElement("button");
-      btn.textContent = q;
-      btn.onclick = () => {
-        totalQuestions--;
-        logDialogue("Jack", q);
-        logDialogue("Suspect", a);
-        updateQuestionCount();
-        if (totalQuestions <= 0) goToScene("accusation");
-      };
-      optionsDiv.appendChild(btn);
-    });
-  } else if (scene.options) {
-    scene.options.forEach((opt) => {
-      const btn = document.createElement("button");
-      btn.textContent = opt.text;
-      btn.onclick = () => {
-        // if restarting, clear log + reset counters
-        if (opt.next === "intro") {
-          totalQuestions = 12;
-          document.getElementById("log").innerHTML = "";
-          updateQuestionCount();
-        }
-        goToScene(opt.next);
-      };
-      optionsDiv.appendChild(btn);
-    });
+// 🎲 Fisher-Yates shuffle function
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
   }
 }
 
-function logDialogue(speaker, text) {
-  const log = document.getElementById("log");
-  const p = document.createElement("p");
-  p.className = speaker === "Jack" ? "jack" : "suspect";
-  p.textContent = `[${speaker}]: ${text}`;
-  log.appendChild(p);
-  log.scrollTop = log.scrollHeight;
+// Start game
+startBtn.addEventListener("click", () => {
+  storySection.classList.add("hidden");
+  gameSection.classList.remove("hidden");
+
+  // 🎃 Shuffle cards before starting
+  shuffleCards();
+
+  // Start timer
+  startTimer();
+});
+
+// ⏰ Timer logic
+function startTimer() {
+  time = 100;
+  timeDisplay.textContent = time;
+  timer = setInterval(() => {
+    time--;
+    timeDisplay.textContent = time;
+    if (time <= 0) {
+      clearInterval(timer);
+      endGame();
+    }
+  }, 1000);
 }
 
-function updateQuestionCount() {
-  document.getElementById(
-    "question-count"
-  ).textContent = `Questions left: ${totalQuestions} (max 6 each)`;
+// 🧠 Shuffle the cards inside the container
+function shuffleCards() {
+  const cards = Array.from(cardContainer.children);
+  shuffle(cards);
+  cards.forEach((card) => {
+    // Reset card states
+    card.classList.remove("visible");
+    cardContainer.appendChild(card);
+  });
 }
 
-function goToScene(name) {
-  currentScene = name;
-  showScene(scenes[name]);
-}
+// 🃏 Flip logic
+document.querySelectorAll(".card").forEach((card) => {
+  card.addEventListener("click", () => {
+    if (lockBoard || card.classList.contains("visible")) return;
+    card.classList.add("visible");
+    flips++;
+    flipsDisplay.textContent = flips;
 
-// LEFT PANEL BUTTONS
-document.getElementById("clear-log").onclick = () => {
-  document.getElementById("log").innerHTML = "";
-};
+    if (!firstCard) {
+      firstCard = card;
+    } else {
+      checkMatch(firstCard, card);
+      firstCard = null;
+    }
+  });
+});
 
-// 🔙 BACK BUTTON — goes back to suspect choice screen
-document.getElementById("back").onclick = () => {
+// ✅ Check if two cards match
+function checkMatch(card1, card2) {
   if (
-    ["gravekeeper", "fortuneTeller", "doctor", "orphan"].includes(currentScene)
+    card1.querySelector(".card-value").src ===
+    card2.querySelector(".card-value").src
   ) {
-    goToScene("investigationHub");
+    matchedCards.push(card1, card2);
+    addHint(card1.dataset.hint);
+    if (matchedCards.length === document.querySelectorAll(".card").length) {
+      endGame(true);
+    }
+  } else {
+    lockBoard = true;
+    setTimeout(() => {
+      card1.classList.remove("visible");
+      card2.classList.remove("visible");
+      lockBoard = false;
+    }, 800);
   }
-};
+}
 
-// Start game automatically
-window.addEventListener("DOMContentLoaded", () => {
-  updateQuestionCount();
-  showScene(scenes[currentScene]);
+// 🕵️ Add hint to Detective Log
+function addHint(hint) {
+  const li = document.createElement("li");
+  li.textContent = `🕵️ You found a clue: ${hint}`;
+  hintLog.appendChild(li);
+}
+
+// 🔚 End game
+function endGame(victory = false) {
+  clearInterval(timer);
+  gameSection.classList.add("hidden");
+  chooseSection.classList.remove("hidden");
+
+  const li = document.createElement("li");
+  li.textContent = victory
+    ? "All clues found! Time to make your final deduction..."
+    : "Time’s up! Use what you found to guess.";
+  hintLog.appendChild(li);
+}
+
+// ⚖️ Guess who did it
+suspectButtons.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    alert(`You accused ${btn.textContent}! 🎃`);
+  });
+});
+
+// 🔁 Restart button
+restartBtn.addEventListener("click", () => {
+  window.location.reload();
 });
