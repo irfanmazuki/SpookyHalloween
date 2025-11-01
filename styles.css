@@ -90,7 +90,7 @@ body {
 
 .card-front {
   transform: rotateY(180deg);
-  background: #222;
+  background: #ffffff;
 }
 
 .card.visible .card-front {
@@ -121,4 +121,105 @@ body {
 #restart-btn:hover {
   background: #ffbb89;
   color: #000;
+}
+
+.hlwn-img {
+  width: 500px;
+}
+
+#suspect-list {
+  color: #fff;
+  font-family: "Creepster", cursive;
+  text-align: left;
+  font-size: 18px;
+  margin-top: 20px;
+}
+
+#suspect-list h2 {
+  text-align: center;
+  color: #ff6d00;
+  margin-bottom: 20px;
+}
+
+.suspect-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.suspect-list li {
+  display: flex;
+  align-items: center;
+  background: rgba(20, 10, 0, 0.8);
+  border: 2px solid #ff6d00;
+  border-radius: 15px;
+  padding: 10px 15px;
+  gap: 15px;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.suspect-list li:hover {
+  transform: scale(1.03);
+  box-shadow: 0 0 15px #ff6d00;
+}
+
+.avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 3px solid #ffbb89;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+/* --- Intro Section Layout --- */
+.intro-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+  background: rgba(15, 5, 0, 0.8);
+  padding: 30px;
+  border: 2px solid #ff6d00;
+  border-radius: 15px;
+  margin: 15px auto;
+  max-width: 900px;
+}
+
+/* --- Image Styling --- */
+.hlwn-img {
+  width: 40%;
+  max-width: 350px;
+  border-radius: 15px;
+  border: 3px solid #ff6d00;
+  box-shadow: 0 0 15px #ff6d00;
+  object-fit: cover;
+}
+
+/* --- Text Styling --- */
+.intro-section p {
+  color: #fff;
+  font-family: "Creepster", cursive;
+  font-size: 1.3em;
+  line-height: 1.5em;
+  text-shadow: 0 0 5px #ff6d00;
+  flex: 1;
+}
+
+/* --- Responsive for smaller screens --- */
+@media (max-width: 768px) {
+  .intro-section {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .hlwn-img {
+    width: 80%;
+  }
+}
+
+.hlwn-h {
+  margin: 0px;
 }
