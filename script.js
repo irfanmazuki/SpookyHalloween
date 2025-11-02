@@ -8,8 +8,10 @@ const hintLog = document.getElementById("hint-log");
 const restartBtn = document.getElementById("restart-btn");
 const suspectButtons = document.querySelectorAll(".suspect-btn");
 const cardContainer = document.getElementById("card-container");
+const correctMurderer = "👧 The Orphan";
 
-let time = 100;
+let candies = 0;
+let time = 45;
 let flips = 0;
 let timer;
 let matchedCards = [];
@@ -38,7 +40,6 @@ startBtn.addEventListener("click", () => {
 
 // ⏰ Timer logic
 function startTimer() {
-  time = 100;
   timeDisplay.textContent = time;
   timer = setInterval(() => {
     time--;
@@ -85,7 +86,7 @@ function checkMatch(card1, card2) {
     card2.querySelector(".card-value").src
   ) {
     matchedCards.push(card1, card2);
-    addHint(card1.dataset.hint);
+    addHint(card1.dataset.hint, card1.querySelector(".card-value").src);
     if (matchedCards.length === document.querySelectorAll(".card").length) {
       endGame(true);
     }
@@ -100,9 +101,24 @@ function checkMatch(card1, card2) {
 }
 
 // 🕵️ Add hint to Detective Log
-function addHint(hint) {
+function addHint(hint, imageSrc) {
   const li = document.createElement("li");
-  li.textContent = `🕵️ You found a clue: ${hint}`;
+  li.classList.add("clue-item");
+
+  // Create the image
+  const img = document.createElement("img");
+  img.src = imageSrc;
+  img.alt = "Clue Image";
+  img.classList.add("clue-image");
+
+  // Create the text
+  const text = document.createElement("span");
+  text.textContent = `🕵️ You found a clue: ${hint}`;
+
+  // Append image first, then text
+  li.appendChild(img);
+  li.appendChild(text);
+
   hintLog.appendChild(li);
 }
 
@@ -119,10 +135,36 @@ function endGame(victory = false) {
   hintLog.appendChild(li);
 }
 
-// ⚖️ Guess who did it
 suspectButtons.forEach((btn) => {
   btn.addEventListener("click", () => {
-    alert(`You accused ${btn.textContent}! 🎃`);
+    const accused = btn.textContent.trim();
+    const li = document.createElement("li");
+    li.classList.add("accuse-item");
+
+    // Accusation text
+    const text = document.createElement("span");
+    text.textContent = `⚖️ You accused ${accused}!`;
+
+    // Result check
+    const result = document.createElement("strong");
+    if (accused === correctMurderer) {
+      result.textContent = " ✅ Correct! You solved the mystery!";
+      li.classList.add("correct");
+      candies++;
+    } else {
+      result.textContent = " ❌ Wrong! The real murderer escaped...";
+      li.classList.add("wrong");
+    }
+    candies += Math.floor(matchedCards.length / 4);
+    const candyHtml = document.createElement("span");
+    candyHtml.textContent = "You get " + candies + " candies. Congratulations!";
+
+    // Append both
+    li.appendChild(text);
+    li.appendChild(result);
+    li.appendChild(candyHtml);
+
+    hintLog.appendChild(li);
   });
 });
 

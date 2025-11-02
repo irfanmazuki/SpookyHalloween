@@ -7,7 +7,7 @@ body {
 
 .container {
   display: flex;
-  height: 100vh;
+  min-height: 100vh;
 }
 
 /* Left Panel */
@@ -222,4 +222,24 @@ body {
 
 .hlwn-h {
   margin: 0px;
+}
+
+.clue-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 4px 0;
+}
+
+.clue-image {
+  width: 65px;
+  height: 65px;
+  background-color: #ffffff;
+  padding: 5px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.hlwn-h {
+  margin: 0px !important;
 }
