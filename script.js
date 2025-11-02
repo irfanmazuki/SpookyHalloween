@@ -165,6 +165,23 @@ suspectButtons.forEach((btn) => {
     li.appendChild(candyHtml);
     restartBtn.style.display = "block";
 
+    const explanation = document.createElement("span");
+    if (accused == "👧 The Orphan") {
+      explanation.textContent =
+        "Lily worked at the clinic with Dr. Winky, who secretly knew she was the daughter of a wealthy woman who abandoned her as a baby. He hid the truth to “protect her from pain,” but really feared the mother’s power and the scandal it would bring. One day Lily overheard the mother’s name mentioned in old patient files and realized the truth — she wasn’t an orphan by fate, but by rejection. Hurt and furious, she confronted her mother, who coldly denied her. Devastated and terrified of being abandoned again, Lily used the clinic’s rare floral poison to slowly kill her, paying the grave keeper to prepare a burial early so her mother could never leave her again. The dried tears on the victim, the “DONT LEAVE ME” carved on the tree, the cash with the grave digger, and the locket holding the doctor’s image reveal a broken girl who killed not out of hatred, but out of desperate, painful longing for the love she was never given.";
+    } else if (accused == "💀 The Grave Keeper") {
+      explanation.textContent =
+        "The grave digger, Mr. Frank, was not part of the murder — he simply dug a grave early because the fortune teller paid him, believing in a dark prediction that she herself was going to die soon. She wanted her grave ready in advance, and that is why a large stack of cash was found on the grave digger. This detail makes the scene look suspicious at first, but in reality it has nothing to do with the killing. His only role was preparing a grave for someone who feared her own fate, unknowingly creating a coincidence that confused the investigation.";
+    } else if (accused == "🧙‍♂️ Dr. Winky") {
+      explanation.textContent =
+        "Although the clues seem to point to the doctor because he identified the rare floral poison, and only him worked at the clinic, and quietly looked after Lily, he is not the murderer. The doctor kept Lily's true parentage secret only to protect her from the pain of knowing her wealthy mother had willingly abandoned her, not to hide a crime. Lily also worked at the clinic and had the same access to herbs and medical knowledge, giving her the ability to obtain the poison herself. The locket with the doctor’s image reflects her dependency on him, not his guilt. In the end, the doctor’s secret was one of protection, while Lily, overwhelmed by discovering her mother rejected her, carried out the act.";
+    } else {
+      explanation.textContent =
+        "The fortune teller, Ms. Zachel, wasn’t involved in the murder at all — she was simply a frightened woman who believed her own reading that she would die soon. Convinced of her fate, she secretly paid the grave digger to prepare a grave for herself in advance, which explains the cash he had and the grave dug before anyone actually died. She also told others she witnessed Lily and the victim arguing, which unintentionally pointed suspicion toward the doctor and others, but she had no role in the crime. In the end, her actions came from fear and superstition, not guilt.";
+    }
+    li.appendChild(document.createElement("br"));
+    li.appendChild(explanation);
+
     hintLog.appendChild(li);
   });
 });
