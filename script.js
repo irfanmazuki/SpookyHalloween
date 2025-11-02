@@ -163,6 +163,7 @@ suspectButtons.forEach((btn) => {
     li.appendChild(text);
     li.appendChild(result);
     li.appendChild(candyHtml);
+    restartBtn.style.display = "block";
 
     hintLog.appendChild(li);
   });

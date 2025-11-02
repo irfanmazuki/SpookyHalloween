@@ -109,6 +109,7 @@ body {
 
 .suspect-btn,
 #restart-btn {
+  margin-top: 20px;
   background: #ff6d00;
   border: none;
   color: white;
